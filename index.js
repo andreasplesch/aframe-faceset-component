@@ -189,7 +189,7 @@ function getGeometry (data, dmaps, facesNeedUpdate) {
         //var fuzz = 1/10000; // 1/100000 too small if size around 1
         //var xfuzz = size[xd] * (Math.random() - 0.5) * fuzz;
         //var yfuzz = size[yd] * (Math.random() - 0.5) * fuzz;
-        return [ vtx[xd] + xfuzz, vtx[yd] + yfuzz ]
+        return [ vtx[xd] + 0, vtx[yd] + 0 ]
       }
     );
     //vertices2d: array of arrays [[2, 4], [5, 6]]
