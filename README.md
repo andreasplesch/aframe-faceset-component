@@ -1,6 +1,6 @@
-## aframe-example-component
+## aframe-faceset-component
 
-A example component for [A-Frame](https://aframe.io).
+A Face Set component for [A-Frame](https://aframe.io).
 
 ### Properties
 
@@ -18,7 +18,7 @@ Install and use by directly including the [browser files](dist):
 <head>
   <title>My A-Frame Scene</title>
   <script src="https://aframe.io/releases/0.2.0/aframe.min.js"></script>
-  <script src="https://rawgit.com/ngokevin/aframe-component-boilerplate/master/dist/aframe-example-component.min.js"></script>
+  <script src="https://rawgit.com/andreasplesch/aframe-faceset-component/master/dist/aframe-faceset-component.min.js"></script>
 </head>
 
 <body>
@@ -33,12 +33,12 @@ Install and use by directly including the [browser files](dist):
 Install via NPM:
 
 ```bash
-npm install aframe-example-component
+npm install aframe-faceset-component
 ```
 
 Then register and use.
 
 ```js
 require('aframe');
-require('aframe-example-component');
+require('aframe-faceset-component');
 ```
