@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <script src="../build.js"></script>
+</head>
+<body>
+
+<a-scene stats> 
+
+  <a-entity rotation='-30 0 0' position='0 0 13'>
+    <a-entity camera look-controls wasd-controls='fly: true' ></a-entity>
+  </a-entity>
+  
+  <a-entity light="type: directional; color: #FFF; intensity: 0.9" position="-100 100 100"></a-entity>
+  <a-entity light="type: directional; color: #FFF; intensity: 0.9" position="100 100 100"></a-entity>
+  <a-entity light="type: directional; color: #FFF; intensity: 0.5" position="0 -100 0"></a-entity>
+      
+  <a-entity id='dyn' faceset='crease: false; projectdir: y' material="color: darkseagreen; roughness: 0.5; metalness: 0.5;" scale='25 0.5 25' position='-12.5 -3 -12.5'></a-entity>
+  
+  <a-sky color="#FFEED0"></a-sky>
+</a-scene>
+</body>
+<script>
+window.onload = function () {
+  var ent = document.querySelector("#dyn");
+  
+  var n = 20;
+  var x_freq = (3+Math.random()*n/3)*Math.PI;
+  var y_freq = (3+Math.random()*n/3)*Math.PI;
+  
+  var verts = genSurface(performance.now());
+  ent.setAttribute('faceset', 'vertices', verts);
+  //ent.setAttribute('faceset', 'triangles', ent.object3DMap.mesh.geometry.faces);
+  var tris = genTriangles(n);
+  ent.setAttribute('faceset', 'triangles', tris);
+  //triangulation is very slow, make sure that faces are provided
+  function animate(t) {
+    ent.setAttribute('faceset', 'vertices', genSurface(t));
+    //ent.setAttribute('faceset', 'crease', false);
+    window.requestAnimationFrame(animate);
+  }
+  
+  window.requestAnimationFrame(animate);
+  
+  function genTriangles(n) {
+    var tris = [];
+    for (var x = 0; x < n*(n-1); x += n) {
+      for (var y = 0; y < n-1; y++) {
+        tris.push([y + x, y + 1 + x, y + x + n].join(' '));
+        tris.push([y + 1 + x, y + 1 + x + n, y + x + n].join(' '));
+      }
+    }
+    return tris.join(' ')
+  }
+  
+  function genSurface(t) {
+    var verts = [];
+    var zz, xx, yy;
+    for (var x = 0; x < 1; x += 1/n) {
+      for (var y = 0; y < 1; y += 1/n) {
+        zz = Math.pow(Math.cos( x*x_freq + t/1000 ), 2) + Math.cos( (y+0.25)*y_freq + Math.pow(Math.sin(t/1000), 2) );
+        yy = y + Math.cos(y*y_freq + Math.pow(t/10000,1.5))/n;
+        xx = x;
+        verts.push(new THREE.Vector3(xx, zz, yy));
+      }
+    }
+    return verts;
+  }
+}    
+</script>
+</html>
+
