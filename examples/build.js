@@ -16,7 +16,7 @@ if (typeof AFRAME === 'undefined') {
 //parsing from line example
 //default texture coordinate from bbox .computeBoundingBox, .BoundingBox
 
-require('./lib/delaunay');
+var Delaunay = require('./lib/delaunay.js');
 
 AFRAME.registerComponent('faceset', {
   schema: {
@@ -285,7 +285,7 @@ function applyTranslate (geometry, translate, currentTranslate) {
 }
 
 
-},{"./lib/delaunay":3}],3:[function(require,module,exports){
+},{"./lib/delaunay.js":3}],3:[function(require,module,exports){
 //https://github.com/ironwallaby/delaunay
 
 var Delaunay;

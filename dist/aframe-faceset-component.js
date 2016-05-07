@@ -57,7 +57,7 @@
 	//parsing from line example
 	//default texture coordinate from bbox .computeBoundingBox, .BoundingBox
 
-	__webpack_require__(1);
+	var Delaunay = __webpack_require__(1);
 
 	AFRAME.registerComponent('faceset', {
 	  schema: {
