@@ -49,7 +49,7 @@ AFRAME.registerComponent('faceset', {
         }).join(',');
       }
     },
-    crease: { default: false },
+    //crease: { default: false },
     projectdir: { 
       type: 'string',
       default: 'auto'
@@ -121,7 +121,7 @@ AFRAME.registerComponent('faceset', {
     g.computeFaceNormals();
     g.computeVertexNormals();
     
-    if (data.crease) { mesh.material.shading = THREE.FlatShading; };
+    //if (data.crease) { mesh.material.shading = THREE.FlatShading; };
     //g.computeBoundingSphere(); // have boundingBox
     
   },
