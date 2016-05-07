@@ -16,7 +16,7 @@ if (typeof AFRAME === 'undefined') {
 //parsing from line example
 //default texture coordinate from bbox .computeBoundingBox, .BoundingBox
 
-require('./lib/delaunay.js');
+var Delaunay = require('./lib/delaunay.js');
 
 AFRAME.registerComponent('faceset', {
   schema: {
