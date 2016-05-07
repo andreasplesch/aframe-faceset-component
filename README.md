@@ -38,7 +38,10 @@ Install and use by directly including the [browser files](dist):
 
 <body>
   <a-scene>
-    <a-entity example="exampleProp: exampleVal"></a-entity>
+    <!-- 1 x 1 default plane, default material -->
+    <a-entity faceset></a-entity>
+	<!-- triangle, automatically triangulated -->
+    <a-entity faceset='vertices: 0 0 0, 1 0 0, 0.5 0.5 0></a-entity>
   </a-scene>
 </body>
 ```
