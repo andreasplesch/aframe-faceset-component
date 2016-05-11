@@ -2,20 +2,10 @@ if (typeof AFRAME === 'undefined') {
   throw new Error('Component attempted to register before AFRAME was available.');
 }
 
-//THREE.geometry
-//directly provide vertices
-//and indices = faces
-//perhaps optionally triangulate
-//using https://github.com/ironwallaby/delaunay
-//rewrite using registerGeometry
-//parsing from line example
-//default texture coordinate from bbox .computeBoundingBox, .BoundingBox
-
 var Delaunay = require('./lib/delaunay.js');
 
 AFRAME.registerComponent('faceset', {
   schema: {
-    //color: { default: '#000' },
     vertices: {
       default: [
         { x: -0.5, y: 0, z: 0.5 },
@@ -36,7 +26,10 @@ AFRAME.registerComponent('faceset', {
       parse: function (value) { return parseFace3s (value) } ,
       // Serialize array of vec3s in case someone does getAttribute('faceset', 'triangles', [...]).
       stringify: function (data) {
-        return data.map(AFRAME.utils.coordinates.stringify).join(',');
+        return data.map(function face2coord(face) {
+					return { x:face.a; y: face.b; z: face.c };
+				}
+				.map(AFRAME.utils.coordinates.stringify).join(',');
       }
     }, 
     uvs: { // texture coordinates as list 
