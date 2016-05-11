@@ -27,8 +27,8 @@ AFRAME.registerComponent('faceset', {
       // Serialize array of vec3s in case someone does getAttribute('faceset', 'triangles', [...]).
       stringify: function (data) {
         return data.map(function face2coord(face) {
-					return { x:face.a; y: face.b; z: face.c };
-				}
+					return { x:face.a, y: face.b, z: face.c };
+				} )
 				.map(AFRAME.utils.coordinates.stringify).join(',');
       }
     }, 
