@@ -15,7 +15,7 @@
   <a-entity light="type: directional; color: #FFF; intensity: 0.9" position="100 100 100"></a-entity>
   <a-entity light="type: directional; color: #FFF; intensity: 0.5" position="0 -100 0"></a-entity>
       
-  <a-entity id='dyn' faceset='crease: false; projectdir: y' material="color: darkseagreen; roughness: 0.5; metalness: 0.5;" scale='25 0.5 25' position='-12.5 -3 -12.5'></a-entity>
+  <a-entity id='dyn' faceset='projectdir: y' material="color: darkseagreen; roughness: 0.5; metalness: 0.5;" scale='25 0.5 25' position='-12.5 -3 -12.5'></a-entity>
   
   <a-sky color="#FFEED0"></a-sky>
 </a-scene>
@@ -46,11 +46,11 @@ window.onload = function () {
     var tris = [];
     for (var x = 0; x < n*(n-1); x += n) {
       for (var y = 0; y < n-1; y++) {
-        tris.push([y + x, y + 1 + x, y + x + n].join(' '));
-        tris.push([y + 1 + x, y + 1 + x + n, y + x + n].join(' '));
+        tris.push( new THREE.Face3( y + x, y + 1 + x, y + x + n) );
+        tris.push( new THREE.Face3( y + 1 + x, y + 1 + x + n, y + x + n) );
       }
     }
-    return tris.join(' ')
+    return tris
   }
   
   function genSurface(t) {
