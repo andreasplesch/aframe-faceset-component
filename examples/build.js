@@ -95,6 +95,9 @@ AFRAME.registerComponent('faceset', {
       mesh.geometry = null;
       var mat = mesh.material;
       g = getGeometry(this.data, this.dmaps, facesNeedUpdate);
+			g.mergeVertices();
+			g.computeFaceNormals();
+			g.computeVertexNormals();
       mesh = new THREE.Mesh(g, mat);
       //this.el.object3DMap.mesh = mesh;
       this.el.setObject3D('mesh', mesh);
@@ -116,9 +119,6 @@ AFRAME.registerComponent('faceset', {
       g.uvsNeedUpdate = true;
     }
     
-    g.mergeVertices();
-    g.computeFaceNormals();
-    g.computeVertexNormals();
     
     //if (data.crease) { mesh.material.shading = THREE.FlatShading; };
     //g.computeBoundingSphere(); // have boundingBox
@@ -129,7 +129,9 @@ AFRAME.registerComponent('faceset', {
    * Removes geometry on remove (callback).
    */
   remove: function () {
-    this.el.getObject3D('mesh').geometry.dispose = new THREE.Geometry();
+    this.el.getObject3D('mesh').geometry.dispose();
+		this.el.getObject3D('mesh').geometry = new THREE.Geometry();
+		
   }
 });
 
