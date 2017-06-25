@@ -1,0 +1,129 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'C:\\Program Files\\nodejs\\node.exe',
+1 verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+1 verbose cli   'publish' ]
+2 info using npm@2.15.1
+3 info using node@v4.4.4
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: 'C:\\Users\\andreas\\Documents\\GitHub\\aframe-faceset-component',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory C:\Users\andreas\AppData\Roaming\npm-cache\aframe-faceset-component\0.4.0\package.tgz not in flight; packing
+9 verbose correctMkdir C:\Users\andreas\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+10 verbose tar pack [ 'C:\\Users\\andreas\\AppData\\Roaming\\npm-cache\\aframe-faceset-component\\0.4.0\\package.tgz',
+10 verbose tar pack   'C:\\Users\\andreas\\Documents\\GitHub\\aframe-faceset-component' ]
+11 verbose tarball C:\Users\andreas\AppData\Roaming\npm-cache\aframe-faceset-component\0.4.0\package.tgz
+12 verbose folder C:\Users\andreas\Documents\GitHub\aframe-faceset-component
+13 info prepublish aframe-faceset-component@0.4.0
+14 verbose addLocalTarball adding from inside cache C:\Users\andreas\AppData\Roaming\npm-cache\aframe-faceset-component\0.4.0\package.tgz
+15 verbose correctMkdir C:\Users\andreas\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+16 silly cache afterAdd aframe-faceset-component@0.4.0
+17 verbose afterAdd C:\Users\andreas\AppData\Roaming\npm-cache\aframe-faceset-component\0.4.0\package\package.json not in flight; writing
+18 verbose correctMkdir C:\Users\andreas\AppData\Roaming\npm-cache correctMkdir not in flight; initializing
+19 verbose afterAdd C:\Users\andreas\AppData\Roaming\npm-cache\aframe-faceset-component\0.4.0\package\package.json written
+20 silly publish { name: 'aframe-faceset-component',
+20 silly publish   version: '0.4.0',
+20 silly publish   description: 'Face Set component for A-Frame.',
+20 silly publish   main: 'index.js',
+20 silly publish   scripts:
+20 silly publish    { build: 'browserify examples/main.js -o examples/build.js',
+20 silly publish      dev: 'budo examples/main.js:build.js --dir examples --port 8000 --live --open',
+20 silly publish      dist: 'webpack index.js dist/aframe-faceset-component.js && webpack -p index.js dist/aframe-faceset-component.min.js',
+20 silly publish      postpublish: 'npm run dist',
+20 silly publish      preghpages: 'npm run build && shx rm -rf gh-pages && shx cp -r examples gh-pages',
+20 silly publish      ghpages: 'npm run preghpages && ghpages -p gh-pages',
+20 silly publish      unboil: 'node scripts/unboil.js' },
+20 silly publish   repository:
+20 silly publish    { type: 'git',
+20 silly publish      url: 'git+https://github.com/andreasplesch/aframe-faceset-component.git' },
+20 silly publish   keywords:
+20 silly publish    [ 'aframe',
+20 silly publish      'aframe-component',
+20 silly publish      'aframe-vr',
+20 silly publish      'vr',
+20 silly publish      'mozvr',
+20 silly publish      'webvr' ],
+20 silly publish   author: { name: 'Andreas Plesch andreasplesch@gmail.com>' },
+20 silly publish   license: 'MIT',
+20 silly publish   bugs: { url: 'https://github.com/andreasplesch/aframe-faceset-component/issues' },
+20 silly publish   homepage: 'https://github.com/andreasplesch/aframe-faceset-component#readme',
+20 silly publish   devDependencies:
+20 silly publish    { aframe: '^0.5.0',
+20 silly publish      browserify: '^13.0.0',
+20 silly publish      'browserify-css': '^0.9.1',
+20 silly publish      budo: '^8.2.2',
+20 silly publish      ghpages: '^0.0.8',
+20 silly publish      inquirer: '^1.0.2',
+20 silly publish      shelljs: '^0.7.0',
+20 silly publish      shx: '^0.1.1',
+20 silly publish      webpack: '^1.13.0' },
+20 silly publish   readme: '## aframe-faceset-component\r\n\r\nA Face Set component for [A-Frame](https://aframe.io). This component produces a geometry directly constructed from the provided points. It includes optional triangulation and reasonable default texture coordinate calculations for convenient use. The envisioned use case is for geometries which are not compatible with simple geometric primitives but relatively easy to construct. Another use case is procedural geometry.\r\n\r\n### Properties\r\n\r\n| Property | Description | Default Value |\r\n| -------- | ----------- | ------------- |\r\n| vertices |  list of point  |  -0.5 0 0.5, 0.5 0 0.5,\r\n| |          x, y, z triplets  |     0.5 0 -0.5, -0.5 0 -0.5   |\r\n| triangles | list of face | empty list|\r\n| |         index triplets |  |\r\n| projectdir | axis along which | auto|\r\n| |          to project for 2d triangulation | |\r\n| uvs |    list of 2d vertex coord.  | empty list |\r\n\r\n- triangles: each triangle is defined by three indices into the vertices list. If no triangles are provided, Delaunay triangulation of the vertices is used. To determine the indices in this case, the vertices are first collapsed into a 2d plane along the axis given by the projectdir property.\r\n\r\n- projectdir: one of x, y or z. Other values result in projection along the shortest dimension of the bounding box.\r\n\r\n- uvs: the list should contain one 2d coordinate pair for each vertex in the vertices list. If no uvs are provided, uvs are assigned based on the two largest dimensions of the bounding box surrounding the vertices.The u coordinate varies from 0 to 1 along the largest dimension, the v coordinate along the second largest.\r\n\r\n### Usage\r\n\r\n#### Browser Installation\r\n\r\nInstall and use by directly including the [browser files](dist):\r\n\r\n```html\r\n<head>\r\n  <title>My A-Frame Scene</title>\r\n  <script src="https://aframe.io/releases/0.2.0/aframe.min.js"></script>\r\n  <script src="https://rawgit.com/andreasplesch/aframe-faceset-component/master/dist/aframe-faceset-component.min.js"></script>\r\n</head>\r\n\r\n<body>\r\n  <a-scene>\r\n    <!-- 1 x 1 default plane, default material -->\r\n    <a-entity faceset></a-entity>\r\n\t<!-- triangle, automatically triangulated -->\r\n    <a-entity faceset=\'vertices: 0 0 0, 1 0 0, 0.5 0.5 0></a-entity>\r\n  </a-scene>\r\n</body>\r\n```\r\n\r\n#### NPM Installation\r\n\r\nInstall via NPM:\r\n\r\n```bash\r\nnpm install aframe-faceset-component\r\n```\r\n\r\nThen register and use.\r\n\r\n```js\r\nrequire(\'aframe\');\r\nrequire(\'aframe-faceset-component\');\r\n```\r\n',
+20 silly publish   readmeFilename: 'README.md',
+20 silly publish   gitHead: '9667dee87792a9cd54c894686aaa505389681d8e',
+20 silly publish   _id: 'aframe-faceset-component@0.4.0',
+20 silly publish   _shasum: '57044b2d2ffead94d1e4a38b451a92cd4f283355',
+20 silly publish   _from: '.' }
+21 verbose getPublishConfig undefined
+22 silly mapToRegistry name aframe-faceset-component
+23 silly mapToRegistry using default registry
+24 silly mapToRegistry registry https://registry.npmjs.org/
+25 silly mapToRegistry data Result {
+25 silly mapToRegistry   raw: 'aframe-faceset-component',
+25 silly mapToRegistry   scope: null,
+25 silly mapToRegistry   name: 'aframe-faceset-component',
+25 silly mapToRegistry   rawSpec: '',
+25 silly mapToRegistry   spec: 'latest',
+25 silly mapToRegistry   type: 'tag' }
+26 silly mapToRegistry uri https://registry.npmjs.org/aframe-faceset-component
+27 verbose publish registryBase https://registry.npmjs.org/
+28 silly publish uploading C:\Users\andreas\AppData\Roaming\npm-cache\aframe-faceset-component\0.4.0\package.tgz
+29 verbose request uri https://registry.npmjs.org/aframe-faceset-component
+30 verbose request sending authorization for write operation
+31 info attempt registry request try #1 at 7:36:22 PM
+32 verbose request using bearer token for auth
+33 verbose request id 951e8977d393af06
+34 http request PUT https://registry.npmjs.org/aframe-faceset-component
+35 http 403 https://registry.npmjs.org/aframe-faceset-component
+36 verbose headers { 'content-type': 'application/json',
+36 verbose headers   'cache-control': 'max-age=300',
+36 verbose headers   'content-length': '95',
+36 verbose headers   'accept-ranges': 'bytes',
+36 verbose headers   date: 'Sun, 25 Jun 2017 23:36:25 GMT',
+36 verbose headers   via: '1.1 varnish',
+36 verbose headers   connection: 'keep-alive',
+36 verbose headers   'x-served-by': 'cache-jfk8132-JFK',
+36 verbose headers   'x-cache': 'MISS',
+36 verbose headers   'x-cache-hits': '0',
+36 verbose headers   'x-timer': 'S1498433783.976463,VS0,VE2461',
+36 verbose headers   vary: 'Accept-Encoding' }
+37 verbose request invalidating C:\Users\andreas\AppData\Roaming\npm-cache\registry.npmjs.org\aframe-faceset-component on PUT
+38 error publish Failed PUT 403
+39 verbose stack Error: "You cannot publish over the previously published version 0.4.0." : aframe-faceset-component
+39 verbose stack     at makeError (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:264:12)
+39 verbose stack     at CachingRegistryClient.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:252:14)
+39 verbose stack     at Request._callback (C:\Program Files\nodejs\node_modules\npm\node_modules\npm-registry-client\lib\request.js:172:14)
+39 verbose stack     at Request.self.callback (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:199:22)
+39 verbose stack     at emitTwo (events.js:87:13)
+39 verbose stack     at Request.emit (events.js:172:7)
+39 verbose stack     at Request.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:1036:10)
+39 verbose stack     at emitOne (events.js:82:20)
+39 verbose stack     at Request.emit (events.js:169:7)
+39 verbose stack     at IncomingMessage.<anonymous> (C:\Program Files\nodejs\node_modules\npm\node_modules\request\request.js:963:12)
+40 verbose statusCode 403
+41 verbose pkgid aframe-faceset-component
+42 verbose cwd C:\Users\andreas\Documents\GitHub\aframe-faceset-component
+43 error Windows_NT 6.1.7601
+44 error argv "C:\\Program Files\\nodejs\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "publish"
+45 error node v4.4.4
+46 error npm  v2.15.1
+47 error code E403
+48 error "You cannot publish over the previously published version 0.4.0." : aframe-faceset-component
+49 error If you need help, you may report this error at:
+49 error     <https://github.com/npm/npm/issues>
+50 verbose exit [ 1, true ]
