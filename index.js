@@ -66,7 +66,9 @@ AFRAME.registerComponent('faceset', {
       }
     }
     var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh);
-    mesh.geometry = new THREE.Geometry();
+    mesh.geometry.dispose(); // remove BufferGeometry
+    mesh.geometry = null;
+    mesh.geometry = new THREE.Geometry(); // replace with regular geometry
   },
 
   update: function (previousData) {
@@ -79,8 +81,6 @@ AFRAME.registerComponent('faceset', {
     
     var diff = AFRAME.utils.diff(previousData, data);
     var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh);
-    //var g = new THREE.Geometry();
-    //g.fromBufferGeometry(mesh.geometry);
     var g = mesh.geometry;
     var geometryNeedsUpdate = !( Object.keys(diff).length === 1 && ('translate' in diff || 'uvs' in diff) ); // also except uvs only diff
     var keepMesh = ( data.vertices.length == g.vertices.length ) && 
