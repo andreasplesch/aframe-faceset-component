@@ -42,7 +42,7 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	if (typeof AFRAME === 'undefined') {
 	  throw new Error('Component attempted to register before AFRAME was available.');
@@ -111,6 +111,8 @@
 	        z: 'y'
 	      }
 	    }
+	    var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh);
+	    mesh.geometry = new THREE.Geometry();
 	  },
 
 	  update: function (previousData) {
@@ -123,23 +125,31 @@
 	    
 	    var diff = AFRAME.utils.diff(previousData, data);
 	    var mesh = this.el.getOrCreateObject3D('mesh', THREE.Mesh);
+	    //var g = new THREE.Geometry();
+	    //g.fromBufferGeometry(mesh.geometry);
 	    var g = mesh.geometry;
 	    var geometryNeedsUpdate = !( Object.keys(diff).length === 1 && ('translate' in diff || 'uvs' in diff) ); // also except uvs only diff
-	    var translateNeedsUpdate = !AFRAME.utils.deepEqual(data.translate, currentTranslate);
+	    var keepMesh = ( data.vertices.length == g.vertices.length ) && 
+	                   ( data.triangles.length == g.faces.length ) ;
+			var translateNeedsUpdate = !AFRAME.utils.deepEqual(data.translate, currentTranslate);
+			var facesNeedUpdate = true;
 	    var facesNeedUpdate = ( data.vertices.length !== g.vertices.length ) || 
 	                          ( data.triangles.length !== g.faces.length ) ;
 	    var uvsNeedUpdate = 'uvs' in diff || facesNeedUpdate ;
+			
 
 	    if (geometryNeedsUpdate) {
-	      mesh.geometry.dispose(); // hm, old geometry is not gc'ed
-	      mesh.geometry = null;
-	      var mat = mesh.material;
-	      g = getGeometry(this.data, this.dmaps, facesNeedUpdate);
-	      mesh = new THREE.Mesh(g, mat);
-	      //this.el.object3DMap.mesh = mesh;
-	      this.el.setObject3D('mesh', mesh);
-	      g.verticesNeedUpdate = true; // issue #7179, does not work, will need replace vertices
-	    }
+				if (keepMesh) { updateGeometry(g, this.data); }
+	      else {
+					mesh.geometry.dispose(); // hm, old geometry is not gc'ed
+					mesh.geometry = null;
+					var mat = mesh.material;
+					g = getGeometry(this.data, this.dmaps, facesNeedUpdate);
+					//var bg = new THREE.BufferGeometry().fromGeometry(g);
+					mesh = new THREE.Mesh(g, mat);
+					this.el.setObject3D('mesh', mesh);
+	      }
+			}
 	    
 	    if (translateNeedsUpdate) {
 	      applyTranslate(g, data.translate, currentTranslate);
@@ -157,9 +167,10 @@
 	    }
 	    
 	    g.mergeVertices();
-	    g.computeFaceNormals();
-	    g.computeVertexNormals();
-	    
+				g.computeFaceNormals();
+				g.computeVertexNormals();
+	      g.verticesNeedUpdate = true; // issue #7179, does not work, will need replace vertices
+				
 	    //if (data.crease) { mesh.material.shading = THREE.FlatShading; };
 	    //g.computeBoundingSphere(); // have boundingBox
 	    
@@ -169,7 +180,9 @@
 	   * Removes geometry on remove (callback).
 	   */
 	  remove: function () {
-	    this.el.getObject3D('mesh').geometry.dispose = new THREE.Geometry();
+	    this.el.getObject3D('mesh').geometry.dispose();
+			this.el.getObject3D('mesh').geometry = new THREE.Geometry();
+			
 	  }
 	});
 
@@ -208,6 +221,15 @@
 	  }
 	  return vecs;
 	}
+
+	function updateGeometry (g, data) {
+		g.vertices.forEach(function applyXYZ (v, i) {
+			var d = data.vertices[i];
+			g.vertices[i].set(d.x, d.y, d.z);
+		});
+	  g.computeBoundingBox();
+	}
+
 
 	function getGeometry (data, dmaps, facesNeedUpdate) {
 	  var geometry = new THREE.Geometry();
@@ -318,11 +340,30 @@
 	  geometry.verticesNeedsUpdate = true;
 	}
 
+	//primitive
 
+	var extendDeep = AFRAME.utils.extendDeep;
+	// The mesh mixin provides common material properties for creating mesh-based primitives.
+	// This makes the material component a default component and maps all the base material properties.
+	var meshMixin = AFRAME.primitives.getMeshMixin();
+	AFRAME.registerPrimitive('a-faceset', extendDeep({}, meshMixin, {
+	  // Preset default components. These components and component properties will be attached to the entity out-of-the-box.
+	  defaultComponents: {
+	    faceset: {}
+	  },
+	  // Defined mappings from HTML attributes to component properties (using dots as delimiters).
+	  // If we set `depth="5"` in HTML, then the primitive will automatically set `geometry="depth: 5"`.
+	  mappings: {
+	    vertices: 'faceset.vertices',
+	    triangles: 'faceset.triangles',
+	    uvs: 'faceset.uvs',
+	    projectdir: 'faceset.projectdir'
+	  }
+	}));
 
-/***/ },
+/***/ }),
 /* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	//https://github.com/ironwallaby/delaunay
 
@@ -562,5 +603,5 @@
 	})();
 
 
-/***/ }
+/***/ })
 /******/ ]);
