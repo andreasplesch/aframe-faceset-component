@@ -2,6 +2,9 @@
 
 A Face Set component for [A-Frame](https://aframe.io). This component produces a geometry directly constructed from the provided points. It includes optional triangulation and reasonable default texture coordinate calculations for convenient use. The envisioned use case is for geometries which are not compatible with simple geometric primitives but relatively easy to construct. Another use case is procedural geometry.
 
+See also [aframe-triangleset-component](https://github.com/andreasplesch/aframe-triangleset-component) for a geometry primitive component.
+
+
 ### Properties
 
 | Property | Description | Default Value |
